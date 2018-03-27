@@ -1,2 +1,1 @@
-# TAR-project
-Early Depression Detection from Language Use
+# Early Depression Detection from Language Use
