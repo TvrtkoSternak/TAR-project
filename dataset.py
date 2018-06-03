@@ -8,6 +8,7 @@ from nltk.stem import PorterStemmer, WordNetLemmatizer
 from nltk.corpus import wordnet
 from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
+from imblearn.over_sampling import SMOTE, ADASYN
 
 NEGATIVE_EXAMPLES_CLASS = 0
 POSITIVE_EXAMPLES_CLASS = 1
@@ -44,7 +45,6 @@ class Dataset:
             self.__build_corpus()
 
         self.__fit_vectorizer()
-        print(self.vectorizer.vocabulary_)
 
         print("Dataset loaded\nStats:\nnum positive train: {}\nnum negative train: {}\n"
               "num train: {}\nnum positive test: {}\nnum negative test: {}\n"
@@ -56,6 +56,12 @@ class Dataset:
 
     def get_train_y(self):
         return np.array([user[1] for user in self.train])
+
+    def get_resampled_train_X_y(self, number_of_posts=None, return_bow=True, kind='regular'):
+        X = self.get_train_x(number_of_posts, return_bow)
+        y = self.get_train_y()
+        X_resampled, y_resampled = SMOTE(kind=kind).fit_sample(X, y)
+        return X_resampled, y_resampled
 
     def get_test_x(self, number_of_posts=None, return_bow=True):
         return self.__parse_set(self.test, number_of_posts, return_bow)
