@@ -70,3 +70,5 @@ fabric.properties
 
 .idea/*
 Dataset/
+train_examples.pkl
+test_examples.pkl
