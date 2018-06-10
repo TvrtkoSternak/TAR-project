@@ -1,0 +1,3 @@
+Mean Accuracy: 84.4916665713% +/- 8.41472352026%Mean F1 score: 0.55718837535 +/- 0.194916260025
+
+relu100relu100relu50relu50drop0.6

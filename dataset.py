@@ -1,14 +1,21 @@
+import random as rn
+rn.seed(2)
+from numpy.random import seed
+seed(2)
+from tensorflow import set_random_seed
+set_random_seed(2)
 import os
-import sys
 import pickle
 from xml.dom import minidom
 from nltk import pos_tag
 from nltk.tokenize import word_tokenize
-from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet
 from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
-from imblearn.over_sampling import SMOTE, ADASYN
+from imblearn.over_sampling import SMOTE
+from sklearn.model_selection import train_test_split
+
 
 NEGATIVE_EXAMPLES_CLASS = 0
 POSITIVE_EXAMPLES_CLASS = 1
@@ -23,6 +30,8 @@ class Dataset:
     test = list()
     corpus = set()
     lemmatizer = WordNetLemmatizer()
+    train_x = None
+    test_x = None
     vectorizer = CountVectorizer(max_features=5000)
 
     def __init__(self, corpus = None):
@@ -52,7 +61,11 @@ class Dataset:
               .format(*self.get_stats()))  # printing some statistics so it's nice looking
 
     def get_train_x(self, number_of_posts=None, return_bow=True):
-        return self.__parse_set(self.train, number_of_posts, return_bow)
+        if self.train_x is not None:
+            return self.train_x
+        else:
+            self.train_x = self.__parse_set(self.train, number_of_posts, return_bow)
+            return self.train_x
 
     def get_train_y(self):
         return np.array([user[1] for user in self.train])
@@ -63,8 +76,17 @@ class Dataset:
         X_resampled, y_resampled = SMOTE(kind=kind).fit_sample(X, y)
         return X_resampled, y_resampled
 
+    def get_resampled_split_X_y(self, number_of_posts=None, return_bow=True, kind='regular'):
+        train_x = self.get_train_x(number_of_posts, return_bow)
+        train_y = self.get_train_y()
+        X_train, X_validation, y_train, y_validation = train_test_split(train_x, train_y, test_size=0.33, random_state=1)
+        X_resampled, y_resampled = SMOTE(kind=kind, random_state=1).fit_sample(X_train, y_train)
+        return X_resampled, X_validation, y_resampled, y_validation
+
     def get_test_x(self, number_of_posts=None, return_bow=True):
-        return self.__parse_set(self.test, number_of_posts, return_bow)
+        if self.test_x is None:
+            self.test_x = self.__parse_set(self.test, number_of_posts, return_bow)
+        return self.test_x
 
     def get_test_y(self):
         return np.array([user[1] for user in self.test])
@@ -119,10 +141,21 @@ class Dataset:
         return lematized_one_line
 
     def __parse_set(self, set, number_of_posts=None, return_bow = True):
-        users_posts_representation = []
         if number_of_posts is not None:
-            pass
+            if return_bow:
+                pass
+            else:
+                users_posts_representation = list()
+                for user_posts, _ in set:
+                    posts = list()
+                    for i in range(0, number_of_posts):
+                        if i >= len(user_posts):
+                            posts.append('')
+                        posts.append(user_posts[i])
+                    users_posts_representation.append(posts)
+                return users_posts_representation
         else:
+            users_posts_representation = []
             if return_bow:
 
                 for user_posts, _ in set:

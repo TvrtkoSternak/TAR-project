@@ -1,0 +1,116 @@
+relu10
+relu40
+relu60
+relu80
+relu100
+relu150
+relu200
+relu300
+relu400
+relu10 relu10
+relu20 relu20
+relu50 relu50
+relu100 relu50
+relu50 relu10
+relu50 relu30
+relu10 relu10 relu10
+relu10 relu20 relu30
+relu30 relu40 relu50
+relu40 relu60 relu130
+relu50 relu50 relu200
+relu50 relu100 relu150
+relu70 relu140 relu200
+relu100 relu200 relu300
+relu300 relu200 relu100
+relu200 relu140 relu70
+relu150 relu100 relu50
+relu50 relu40 relu30
+relu200 relu50 relu50
+relu200 relu50 relu20
+relu150 relu50 relu20
+relu200 relu200 relu200
+relu200 relu100 relu200
+relu200 relu20 relu200
+relu100 relu50 relu100
+relu100 relu100 relu100 drop0.2
+relu100 relu100 relu100 drop0.3
+relu100 relu100 relu100 drop0.4
+relu100 relu100 relu100 drop0.5
+relu100 relu100 relu100 drop0.6
+relu100 relu100 relu100 drop0.7
+relu100 relu100 relu100 drop0.8
+relu100 relu70 relu50
+relu100 relu70 relu50 drop0.2
+relu100 relu70 relu50 drop0.3
+relu100 relu70 relu50 drop0.4
+relu100 relu70 relu50 drop0.5
+relu100 relu70 relu50 drop0.6
+relu100 relu70 relu50 drop0.7
+relu100 relu70 relu50 drop0.8
+relu200 relu100 relu50
+relu200 relu100 relu50 drop0.2
+relu200 relu100 relu50 drop0.3
+relu200 relu100 relu50 drop0.4
+relu200 relu100 relu50 drop0.5
+relu200 relu100 relu50 drop0.6
+relu200 relu100 relu50 drop0.7
+relu200 relu100 relu50 drop0.8
+relu100 relu50 relu50
+relu100 relu50 relu50 drop0.2
+relu100 relu50 relu50 drop0.3
+relu100 relu50 relu50 drop0.4
+relu100 relu50 relu50 drop0.5
+relu100 relu50 relu50 drop0.6
+relu100 relu50 relu50 drop0.7
+relu100 relu50 relu50 drop0.8
+relu200 relu20 relu20
+relu200 relu20 relu20 drop0.2
+relu200 relu20 relu20 drop0.3
+relu200 relu20 relu20 drop0.4
+relu200 relu20 relu20 drop0.5
+relu200 relu20 relu20 drop0.6
+relu200 relu20 relu20 drop0.7
+relu200 relu20 relu20 drop0.8
+relu100 relu40 relu40
+relu100 relu40 relu40 drop0.2
+relu100 relu40 relu40 drop0.3
+relu100 relu40 relu40 drop0.4
+relu100 relu40 relu40 drop0.5
+relu100 relu40 relu40 drop0.6
+relu100 relu40 relu40 drop0.7
+relu100 relu40 relu40 drop0.8
+relu100 relu100 relu100 relu100 drop0.5
+relu100 relu100 relu100 relu100 drop0.6
+relu100 relu100 relu100 relu100 drop0.7
+relu100 relu100 relu100 relu100 drop0.8
+relu100 relu100 relu100 relu100 drop0.85
+relu100 relu100 relu100 relu100 drop0.9
+relu100 relu100 relu100 relu100 drop0.93
+relu100 relu100 relu100 relu100 drop0.95
+relu100 relu100 relu100 relu100 drop0.98
+relu100 relu100 relu50 relu50 drop0.3
+relu100 relu100 relu50 relu50 drop0.4
+relu100 relu100 relu50 relu50 drop0.5
+relu100 relu100 relu50 relu50 drop0.6
+relu100 relu50 relu50 relu50 drop0.3
+relu100 relu50 relu50 relu50 drop0.4
+relu100 relu50 relu50 relu50 drop0.5
+relu100 relu50 relu50 relu50 drop0.6
+relu100 relu70 relu50 relu40 drop0.3
+relu100 relu70 relu50 relu40 drop0.4
+relu100 relu70 relu50 relu40 drop0.5
+relu100 relu70 relu50 relu40 drop0.6
+relu70 relu60 relu50 relu40 drop0.3
+relu70 relu60 relu50 relu40 drop0.4
+relu70 relu60 relu50 relu40 drop0.5
+relu70 relu60 relu50 relu40 drop0.6
+relu70 relu50 relu30 relu30 drop0.1
+relu70 relu50 relu30 relu30 drop0.2
+relu70 relu50 relu30 relu30 drop0.25
+relu70 relu50 relu30 relu30 drop0.3
+relu70 relu50 relu30 relu30 drop0.4
+relu50 relu40 relu30 relu20 drop0.1
+relu50 relu40 relu30 relu20 drop0.2
+relu50 relu40 relu30 relu20 drop0.25
+relu50 relu40 relu30 relu20 drop0.3
+relu50 relu40 relu30 relu20 drop0.4
