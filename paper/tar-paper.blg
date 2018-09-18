@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: tar-paper.aux
+The style file: tar2014.bst
+Database file #1: tar-paper.bib
+Warning--empty journal in leiva2017towards
+Warning--empty journal in losadaclef
+You've used 8 entries,
+            2490 wiz_defined-function locations,
+            597 strings with 6040 characters,
+and the built_in function-call counts, 3424 in all, are:
+= -- 366
+> -- 121
+< -- 3
++ -- 42
+- -- 40
+* -- 237
+:= -- 540
+add.period$ -- 33
+call.type$ -- 8
+change.case$ -- 52
+chr.to.int$ -- 8
+cite$ -- 10
+duplicate$ -- 155
+empty$ -- 266
+format.name$ -- 50
+if$ -- 730
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 8
+newline$ -- 49
+num.names$ -- 24
+pop$ -- 65
+preamble$ -- 1
+purify$ -- 60
+quote$ -- 0
+skip$ -- 119
+stack$ -- 0
+substring$ -- 174
+swap$ -- 43
+text.length$ -- 3
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 64
+warning$ -- 2
+while$ -- 29
+width$ -- 11
+write$ -- 110
+(There were 2 warnings)

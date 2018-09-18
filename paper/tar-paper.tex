@@ -1,0 +1,352 @@
+\documentclass[10pt, a4paper]{article}
+
+\usepackage{tar2014}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[pdftex]{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+\title{Early Depression Detection From Language Use}
+
+%VAŽNO: Zakomentirajte sljedeću liniju kada šaljete rad na recenziju
+\name{Ana Bertić, Roko Sr\dj{}an Buča, Tvrtko Sternak}
+
+\address{
+University of Zagreb, Faculty of Electrical Engineering and Computing\\
+Unska 3, 10000 Zagreb, Croatia\\
+\texttt{\{ana.bertic,roko.buca,tvrtko.sternak\}@fer.hr}\\
+}
+
+\abstract{
+Depression detection is a burning problem in today's age of technology.
+ Studies show that it is possible to predict the person's mental state
+ by examining their language use. On social media there is an abundance of
+ written text by its users which can be harvested and used to
+ identify individuals at risk of depression. In this paper, it is shown
+ that with our methods of careful feature selection and class imbalance handling, our deep
+ neural network performs above current state-of-the-art algorithms when trained on research
+ collection of Reddit posts. We also proved that despite the fact that
+ simpler models obtain promising results when using our feature extraction, deep models nevertheless exceed their
+ performance pushing the F1 score to 0.67 from 0.64.
+}
+
+\begin{document}
+
+\maketitleabstract
+
+\section{Introduction}
+
+The World Health Organization estimates that more than 300 million people worldwide are now living with depression,
+ which is 18 percent more than 2005. Since depression is often underdiagnosed there has always been
+ a need to seek effective strategies for early detection, intervention and appropriate treatment of diagnosed individuals.
+ It has been shown that machine learning algorithms can solve the problem of detecting early signs of depression from
+ language use. Our work concerns improvement and validation of possible models, as well as finding new and untried
+ ones that can be used for this purpose. The datataset used for training and testing our approach is a test collection
+ for research on depression and language use \cite{losada2016test}. Dataset is composed of 892 Reddit users, precisely
+ documents containing their post histories which are binary classified in depression and control groups.
+
+ Data preprocessing in this paper consists of standard POS tagging and lemmatization techniques followed by four
+ types of feature extractions. Three bag-of-words (BoW) models were created with an additional extracted and vectorized
+ "special" features (Section \ref{subsec:special}).
+
+ Our deep neural network (DNN) model which is the focus of this paper uses feature selection based on chi2 word scores, simple
+ oversampling techniques seen in Section \ref{sec:oversampling} and additional features which were shown to reliably predict early depression
+ signs \cite{wang2013depression}. DNN uses fixed length feature vectors where each vector represents an entire post history of a given user.
+
+ Additionally, we compare our DNN model to itself when various feature selection methods are used, as well as with previous work
+ in this field and ensambles of simpler machine learning models. We show that it is possible to outperform current
+ state-of-the-art models with ensambles which use our feature extraction techniques.
+
+\section{Related Work}
+
+Even though in the age of social media a massive amount of information can be extracted from
+ social networks, for a long time there has been a lack of publicly available data for doing
+ research on detecting language patterns associated with depression. Prior researches
+ usually included analyses from microblogs like Twitter, proving that large platforms reflect the
+ expression of depression both explicitly and implicitly.
+
+ However, in case of Twitter, the limit of 280 characters is too small to provide any meaningful context.
+ We used collection from open-source platform Reddit carefully constructed by \cite{losada2016test}
+ where each subject is represented via document of a large number of posts and comments submitted
+ during a longer period.
+
+ Numerous text mining techniques have been developed based on background knowledge of
+ psychologycal reasearches \cite{wang2013depression}, some of them including sentiment analysis, linguistic rules and
+ vocabulary construction. However, there has still not been substantially significant improvement
+ of results in conducted related work and existing tehniques generally rely on experimenting with
+ baseline models in hope of achieving better results which rarely exceed over 60\% F1 score.
+
+ For sentiment analysis a lexicon and rule-based sentiment analysis library VADER \cite{gilbert2014vader} is used.
+ It is found to work well when integrated into machine learning models and easily handles text originated in social
+ media. VADER is also used in \cite{leiva2017towards} representing additional features during data preprocessing.
+ It contains methods which retrieve percentage of negative, positive and neutral sentiment
+ representative words and calculates overall sentence sentiment polarity.
+
+ In this paper we, use machine learning models and ensembles similar to that of \cite{polikar2006ensemble} in order
+ to test our feature extraction independent of our modeling methods. Based on the success of our feature extraction
+ methods we developed a DNN which showed improved performance when using those extracted feature vectors.
+
+ In our final testing, we compare our model to the best model presented in an overview of a competition \cite{losadaclef}
+ based on the dataset we used. 
+
+\section{Feature Evaluation}
+
+Corpus constructed from words used by subjects in training set consisted of more than 120.000
+ distinct words which are mostly typos, links and numbers that don't have any discriminatory
+ interpretation. With these observations, it was necessary that the first step in our approach
+ to depression classification is feature evaluation and extraction.
+
+ We decided to observe results based on three approaches. Effectiveness of each approach on the validation
+ set is shown in Table \ref{table:feature-selection-validation}.
+
+\begin{description}[style=unboxed, leftmargin=0cm]
+ \item[$\bullet$ augmented frequency interval feature selection:] Every lemmatized word in
+ the corpus was counted and several word intervals based on word frequency were chosen for
+ testing. Three sizes of word vectors were used: 200, 400 and 1500. We found that models that
+ used word vectors bigger than 200 were prone to overfitting, even with significant dropout
+ added to neural network layers. Frequency interval that proved to work best was the one
+ that contained words with in-corpus frequency being between 6.5\% and 3\%. Chosen word
+ vector was then augmented by removing numbers and other non-words which were then replaced
+ with words that proved to be of value in previous model selection testing.
+ \item[$\bullet$ term frequency-inverse document frequency feature selection:]
+ For each word a tf-idf weight was calculated. This value represents the importance of a word in a document,
+ considering whole corpus. Based on weights, tf-idf matrix was constructed in which each row represented
+ a tf-idf value for each word in corpus for a single document. The matrix rows were labeled into a document of
+ depressed and non depressed user and passed to a random forrest classifier in order to extract most important
+ features, for this classification. 247 words were extracted and filtered down
+ to 200 which were used in further classification.
+ \item[$\bullet$ Chi2 feature selection:] After extraction of BOW representation for each
+ user best 150 words were determined using chi2 algorithm based on $\chi^2$ statistic
+ \cite{liu1995chi2}. The limit of 150 words was chosen based on observation of words that appeared
+ when the limit increased, most of those words were typos or numbers and did not represent any
+ objective semantic meaning. Chi2-based feature selection produced models with best generalization
+ properties and was for that reason used by our DNN model, especially when augmented with additional features.
+\end{description}
+
+\subsection{Special Data}\label{subsec:special}
+
+Inspired by the work of \cite{wang2013depression}, we did a similar analysis of the corpus in order to
+ find additional features with discriminatory value.
+
+ Much like previous works, we found that the use of emoticons was a powerful predictor of somebody's
+ mental state, especially and unsurprisingly the use of negative emoticons. We managed to recreate
+ the general gist of the \cite{wang2013depression} and also found that use of personal pronouns in either
+ singular or plural form can be used as another feature for detecting early signs of depression.
+
+ There were some other factors used which can be found in Table \ref{table:special-features}. Even though we ran our
+ statistical evaluation on both the train set and test set and found some differences, we modeled
+ our special feature vectors based only on the evaluation of the train data. Additionally, it is important
+ to point out that some models had more trouble than others with using this extra feature vector. Our
+ final DNN presented in this paper does not use all nine features, but instead uses the best four features
+ based on the train data evaluation. We chose specifically four features based on both the empirical experimentation
+ and the obvious gap between the fifth and sixth most relevant feature. We didn't use the 'emoticon use' feature
+ since that knowledge is already contained in other used emoticon statistics.
+
+\begin{table*}[htp]
+\caption{Special features statistics on train set (features used in our model are bolded)\label{table:special-features}}
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Special feature (average) & Depressed users & Non-depressed users\\
+\midrule
+emoticon use & 26.7952 & 13.87096\\
+\textbf{positive emoticon use} & 20.1084 & 10.8064\\
+\textbf{negative emoticon use} & 6.6506 & 3.0074\\
+sentence length & 17.8904 & 20.3568\\
+\textbf{first person pronoun use} & 0.04573 & 0.024899\\
+\textbf{plural first person pronoun use} & 0.00266 & 0.00308\\
+posting time & 23:39:09 & 22:47:41\\
+number of posts between 00:00 and 06:00 & 30.45\% & 27.46\%\\
+number of posts between 09:00 and 16:00 & 17.39\% & 21.06\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table*}
+
+
+\section{Oversampling Method}\label{sec:oversampling}
+
+To remedy the problem of severe class imbalances in
+ used dataset (ratio of depressed/control groups is around
+ 1/5), we used various oversampling methods.
+
+ In our baseline model we used Synthetic Minority Over-sampling Technique (SMOTE) proposed in
+ \cite{chawla2002smote}. SMOTE generates synthetic
+ minority class instances between existing minority instances in euclidean space.
+ Final experiment presented in Table \ref{table:final-results}
+ shows that this approach significantly improves models F1 score on the test set.
+
+ Since DNN uses an extra special feature vector which contains different diferent type of data and
+ additonally expand the dimensionality of the input vector we resorted to using other, simpler, oversampling
+ technique. Used techinque artifically increases weights of depressed subjects by copying positive training examples
+ five times in order to equalize the dataset imbalance.
+
+\section{Classifier Model}
+
+This paper presents two different and tested improvements to previous solutions, especially in regards
+ to \cite{losada2016test} since our proposition shares the most similarity in approaching the problem of
+ detecting early signs of depression.
+
+ We propose a user-level representation of data based on BoW models for the first step of the model
+ improvement, we do not use special features in this step. We then apply models and ensambles similar
+ to those used in previous works. To make it more fair, we separately train those machine learning
+ models in order to achieve the best possible results on the feature vector types we use.
+
+ For the second step of the model improvement, we present the best DNN we constructed for this problem.
+ The testing showed that the feature complexity can be much better described with the complex function
+ DNN provides than with simpler machine learning algorithms. The final DNN achieves 0.67 F1 score compared
+ to 0.65 of our ensamble. However our calculations show that this improvement is not statistically significant.
+ Both the DNN and the ensamble work best when using the chi2-based BoW vectors.
+
+\subsection{Baseline Classifier}
+
+After evaluation of the dataset and its size, we concluded that the best way to tackle the problem of
+ depression classification is by using an ensamble of simple classifiers. The ensamble consists of five
+ individually fine tuned classifiers on train set. In Table \ref{table:ensamble-validation} we justify the
+ usage of each classifier in the final ensamble by observing that the F1 score on 5 fold cross validation
+ with chi2 feature selection of ensamble is highest when all five classifiers are used.
+
+Models used in ensamble and their hiperparameters were:
+\begin{description}[style=unboxed, leftmargin=0cm]
+ \item[$\bullet$ Logistic regression:] Regularization was done with L2 penalty, and regularization strength
+ $\lambda$ was set to 20. We didn't use oversampling when validating the classifier so class weight parameter was
+ set to be directly proportional to class frequencies in the input data ('balanced').
+ \item[$\bullet$ Random forest]
+ \item[$\bullet$ SVM:] C-support vector classifier with rbf kernel. Penalty parameter of the error term was
+  set to 0.35 and class weight parameter was also set to 'balanced' like in logistic regression.
+ \item[$\bullet$ Ridge classifier:] Regularization strength $\alpha$ was set to 2.5
+ \item[$\bullet$ Ada boost:] Number of classifiers was set to 150 and learning rate to 1.
+\end{description}
+
+\begin{table}[htp]
+\caption{ensamble f1 scores on validation with leaving one classifier out on each validation\label{table:ensamble-validation}}
+\begin{center}
+\begin{tabular}{lc}
+\toprule
+Ensamble & F1 validation score\\
+\midrule
+w/o logistic regression & 0.57\\
+w/o random forest & 0.61\\
+w/o SVM & 0.70\\
+w/o ridge & 0.70\\
+w/o ada boost & 0.59\\
+full ensamble & 0.72\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+\subsection{Deep Neural Network}
+
+DNN presented in this paper is a fairly simple model. It has four hidden layers which use the ReLU activation function.
+ With all data already preprocessed and loaded into RAM, it takes only a couple of seconds to converge when run on
+ a standard Intel i5 processor. Model has probabilistic output as defined by two neurons with softmax activation
+ function in the last layer. To determine the class a datapoint belongs in we simply use an argmax function. 
+
+ We tuned all hyperparameters by doing an extensive search. 10-fold validation setup was used to determine the best
+ models. During optimization, we only used F1 score as the accuracy score is not very useful due to the inability to
+ detect overfitting on the imbalanced dataset. Even though we used SMOTE oversampling while training the
+ baseline, we found that a simple artificial data weighing worked better for the DNN.
+
+ Several different approaches were attempted and compared. The bare DNN that uses only the main BoW vector represented
+ dataset performs similarly to the ensamble with a F1 score of 0.63. In order to additionally improve our models we
+ implemented additional features as described in the section \ref{subsec:special} in the DNN. Best DNN constructed uses only the top five
+ most significant features from the special feature vector. DNN performs better when the special feature vector is
+ concatenated to the BoW vector and fed to the network, rather when the cascade of classifiers is used. This shows that
+ there is an implicit interaction between chi2-based BoW model and the special features which the ensamble of classifiers cannot
+ fully encompass.
+
+\section{Experiments}
+\begin{table}[htp]
+\caption{ensamble F1 scores on validation with preprocessed data using feature selection methods\label{table:feature-selection-validation}}
+\begin{center}
+\begin{tabular}{lc}
+\toprule
+Feature extraction method & F1 validation score\\
+\midrule
+w/o feature selection & 0.69\\
+w/ afi feature selection & 0.7\\
+w/ tf-idf feature selection & 0.75\\
+w/ chi2 feature selection & 0.72\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table*}[htp]
+\caption{Final results on test sets comparing to \cite{leiva2017towards},\cite{losada2016test} and \cite{losadaclef}\label{table:final-results}}
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Model & p & r & f1\\
+\midrule
+Genetic Algorithm + VADER & 0.45 & \textbf{0.77} & 0.57\\
+Logistic regression & 0.64 & 0.59 & 0.62\\
+FHDOA & 0.61 & 0.67 & 0.64\\
+Ensamble (afi) & \textbf{0.76} & 0.42 & 0.55\\
+Ensamble (tf-idf) & 0.73 & 0.46 & 0.57\\
+Ensamble (chi2) & 0.75 & 0.56 & 0.65\\
+Ensamble (chi2) w/o oversampling & 0.49 & 0.74 & 0.37\\
+Bare neural networks (chi2) & 0.65 & 0.61 & 0.63\\
+Augmented neural networks (chi2) & 0.65 & 0.68 & \textbf{0.67}\\ 
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table*}
+
+In our final experiment we compare F1 scores of our proposed models to those from previous works on the standard test set.
+ Models that we compare ours to are the proposed baseline from \cite{losada2016test}, model proposed in \cite{leiva2017towards}
+ and the current state-of-the-art FHDOA model proposed in \cite{losadaclef}. We show in Table \ref{table:final-results} that both of
+ our models outperform all other models F1 score-wise (0.65 and 0.67 compared to 0.64 achieved by FHDOA). We also point out that our
+ neural network with augmented feature vectors has the most balanced precision-recall score.
+
+ Without using special features our ensamble performs better than our neural network. This is probably due to relatively small
+ train set size. However, when we add special features the ensamble suddenly performs worse while the neural network significantly improves
+ it's F1 score. We conclude that this type of augmented feature vector contains a high level of feature interactivity that
+ is better suited for deeper models.
+
+\section{Future work}
+
+Various improvements could be done to boost the presented model. With the help of psyclogical and deeper statistical research,
+ more special features could be added to the system. It would also be beneficial to include sentiment polarity as an additional
+ feature. More complex models could be created that are compatible with a more fine-grained way of data representation instead of
+ the used coarse user-level one.
+
+ Given that our models are easily overfitted on the available data it is probable that simply adding more data would
+ automatically improve models' performance. 
+
+\section{Conclusion}
+
+In this work we experimented with both machine learning and deep learning models in hope to design a model that is effective
+ at recognizing signs of depression in Reddit users based on their post histories. Starting with ensembles of simple classifiers,
+ we combined three different feature selection methods and studied the results. Models that use Chi2 feature selection
+ proved to be the most successful in this task, surpassing other state-of-the-art models' F1 score by a significant margin.
+ Additionally, we focus on one particular DNN model which reliably outperforms ensambles aforementioned.
+
+ The model is augmented with additional text-mined features which were shown to contain significant linguistic markers in related
+ works. Our results have proven that the classification of depressed users is possible with deep models as well as with ensambles
+ of simple models, both of which outperform current state-of-the-art techniques when using the feature extraction presented in this paper.
+
+\section{Acknowledgments}
+
+We would like to use this opportunity to thank our professor and mentor, Sc.D. Jan Šnajder for the invaluable knowledge of this field that he
+ has provided us. We would also like to than Sc.D. Mladen Karan for suggesting the chi2 feature evalution and for showing us
+ how to perform statistical significance testing.
+
+\bibliographystyle{tar2014}
+\bibliography{tar-paper}
+
+\end{document}

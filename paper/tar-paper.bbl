@@ -1,0 +1,59 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citename{Chawla \bgroup et al.\egroup }2002]{chawla2002smote}
+Nitesh~V Chawla, Kevin~W Bowyer, Lawrence~O Hall, and W~Philip Kegelmeyer.
+\newblock 2002.
+\newblock Smote: synthetic minority over-sampling technique.
+\newblock {\em Journal of artificial intelligence research}, 16:321--357.
+
+\bibitem[\protect\citename{Gilbert}2014]{gilbert2014vader}
+CJ~Hutto~Eric Gilbert.
+\newblock 2014.
+\newblock Vader: A parsimonious rule-based model for sentiment analysis of
+  social media text.
+\newblock In {\em Eighth International Conference on Weblogs and Social Media
+  (ICWSM-14). Available at (20/04/16) http://comp. social. gatech.
+  edu/papers/icwsm14. vader. hutto. pdf}.
+
+\bibitem[\protect\citename{Leiva~Aranda}2017]{leiva2017towards}
+V{\'\i}ctor Leiva~Aranda.
+\newblock 2017.
+\newblock Towards suicide prevention: early detection of depression on social
+  media.
+
+\bibitem[\protect\citename{Liu and Setiono}1995]{liu1995chi2}
+Huan Liu and Rudy Setiono.
+\newblock 1995.
+\newblock Chi2: Feature selection and discretization of numeric attributes.
+\newblock In {\em Tools with artificial intelligence, 1995. proceedings.,
+  seventh international conference on}, pages 388--391. IEEE.
+
+\bibitem[\protect\citename{Losada and Crestani}2016]{losada2016test}
+David~E Losada and Fabio Crestani.
+\newblock 2016.
+\newblock A test collection for research on depression and language use.
+\newblock In {\em International Conference of the Cross-Language Evaluation
+  Forum for European Languages}, pages 28--39. Springer.
+
+\bibitem[\protect\citename{Losada \bgroup et al.\egroup }2017]{losadaclef}
+David~E Losada, Fabio Crestani, and Javier Parapar.
+\newblock 2017.
+\newblock Clef 2017 erisk overview: Early risk prediction on the internet:
+  Experimental foundations.
+
+\bibitem[\protect\citename{Polikar}2006]{polikar2006ensemble}
+Robi Polikar.
+\newblock 2006.
+\newblock Ensemble based systems in decision making.
+\newblock {\em IEEE Circuits and systems magazine}, 6(3):21--45.
+
+\bibitem[\protect\citename{Wang \bgroup et al.\egroup
+  }2013]{wang2013depression}
+Xinyu Wang, Chunhong Zhang, Yang Ji, Li~Sun, Leijia Wu, and Zhana Bao.
+\newblock 2013.
+\newblock A depression detection model based on sentiment analysis in
+  micro-blog social network.
+\newblock In {\em Pacific-Asia Conference on Knowledge Discovery and Data
+  Mining}, pages 201--213. Springer.
+
+\end{thebibliography}
